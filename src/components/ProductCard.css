@@ -1,0 +1,129 @@
+.product-card {
+  background: var(--hds-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--hds-border);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  border-color: var(--hds-steel);
+  box-shadow: var(--shadow-md);
+}
+
+.product-card-image-wrap {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  background: var(--hds-bg);
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-card-image {
+  transform: scale(1.05);
+}
+
+.product-card-category {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--hds-navy);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+}
+
+.product-card-quick-add {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: var(--hds-navy);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s, transform 0.25s;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+.product-card:hover .product-card-quick-add {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.product-card-quick-add:hover {
+  background: var(--hds-royal);
+}
+
+.product-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-card-name-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card-name-link:hover .product-card-name {
+  color: var(--hds-navy);
+}
+
+.product-card-name {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--hds-text);
+  margin-bottom: 0.35rem;
+  line-height: 1.35;
+}
+
+.product-card-desc {
+  font-size: 0.875rem;
+  color: var(--hds-text-muted);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.product-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.product-card-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--hds-navy);
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+}

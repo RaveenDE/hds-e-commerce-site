@@ -1,0 +1,88 @@
+:root {
+  /* HDS brand - from logo */
+  --hds-navy: #213570;
+  --hds-royal: #2d4a9e;
+  --hds-blue-light: #4a6bc2;
+  --hds-text: #1a1a2e;
+  --hds-text-muted: #333333;
+  --hds-bg: #f0f3f7;
+  --hds-bg-warm: #f8f9fc;
+  --hds-white: #ffffff;
+  --hds-steel: #94a3b8;
+  --hds-border: #e2e8f0;
+  --hds-accent: #f59e0b;
+  --shadow-sm: 0 1px 2px rgba(33, 53, 112, 0.06);
+  --shadow-md: 0 4px 12px rgba(33, 53, 112, 0.08);
+  --shadow-lg: 0 12px 40px rgba(33, 53, 112, 0.12);
+  --radius: 12px;
+  --radius-lg: 20px;
+  --font-sans: 'Outfit', system-ui, sans-serif;
+  --font-display: 'DM Serif Display', Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--hds-bg);
+  color: var(--hds-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+/* Utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
