@@ -1,0 +1,80 @@
+.admin-page-header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin-product-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.admin-card-body {
+  padding: 1.25rem;
+}
+
+.admin-product-form .admin-form-group-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-form-hint {
+  font-size: 0.8125rem;
+  color: var(--hds-text-muted);
+  margin-top: 0.25rem;
+}
+
+.admin-form-file {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.admin-form-image-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-form-image-row input {
+  flex: 1;
+  max-width: 320px;
+}
+
+.admin-form-preview {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.admin-form-spec-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-form-spec-row input:first-child {
+  width: 140px;
+}
+
+.admin-form-spec-row input:nth-child(2) {
+  flex: 1;
+}
+
+.admin-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--hds-border);
+}

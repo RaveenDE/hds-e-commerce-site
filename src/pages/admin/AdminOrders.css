@@ -1,0 +1,26 @@
+.admin-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-filter select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--hds-border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+}
+
+.admin-select-inline {
+  padding: 0.35rem 0.5rem;
+  margin-right: 0.5rem;
+  border: 1px solid var(--hds-border);
+  border-radius: 6px;
+  font-size: 0.8125rem;
+}
+
+.admin-card-note {
+  padding: 1rem 1.25rem;
+  color: var(--hds-text-muted);
+  font-size: 0.9375rem;
+}

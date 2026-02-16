@@ -13,6 +13,7 @@ export default function Header() {
     { to: '/elevator-interior-solution', label: 'Elevator Interior' },
     { to: '/#services', label: 'Services' },
     { to: '/#about', label: 'About' },
+    { to: '/admin', label: 'Admin' },
   ]
 
   return (
@@ -37,7 +38,7 @@ export default function Header() {
         <nav className={`nav ${menuOpen ? 'nav-open' : ''}`}>
           <ul className="nav-list">
             {navLinks.map(({ to, label }) => {
-              const isActive = location.pathname === to || (to === '/#services' && location.pathname === '/')
+              const isActive = location.pathname === to || (to === '/#services' && location.pathname === '/') || (to === '/admin' && location.pathname.startsWith('/admin'))
               return (
                 <li key={to}>
                   <Link
