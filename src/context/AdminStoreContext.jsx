@@ -77,6 +77,8 @@ function reducer(state, action) {
       }
     case 'DELETE_PRODUCT':
       return { ...state, products: state.products.filter((p) => p.id !== action.payload) }
+    case 'ADD_ORDER':
+      return { ...state, orders: [action.payload, ...state.orders] }
     case 'UPDATE_ORDER_STATUS':
       return {
         ...state,
@@ -129,6 +131,10 @@ export function AdminStoreProvider({ children }) {
     dispatch({ type: 'DELETE_PRODUCT', payload: id })
   }, [])
 
+  const addOrder = useCallback((order) => {
+    dispatch({ type: 'ADD_ORDER', payload: order })
+  }, [])
+
   const updateOrderStatus = useCallback((orderId, status) => {
     dispatch({ type: 'UPDATE_ORDER_STATUS', payload: { id: orderId, status } })
   }, [])
@@ -150,6 +156,7 @@ export function AdminStoreProvider({ children }) {
     addProduct,
     updateProduct,
     deleteProduct,
+    addOrder,
     updateOrderStatus,
     blockCustomer,
     unblockCustomer,

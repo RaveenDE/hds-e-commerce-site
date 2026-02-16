@@ -1,6 +1,7 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { products } from '../data/products'
 import { formatLKR } from '../utils/formatCurrency'
+import { useCart } from '../context/CartContext'
 import ProductCard from '../components/ProductCard'
 import './Product.css'
 
@@ -17,8 +18,21 @@ function getRelatedProducts(currentProduct, limit = 4) {
 
 export default function Product() {
   const { productId } = useParams()
+  const navigate = useNavigate()
+  const { addItem } = useCart()
   const product = products.find((p) => p.id === productId)
   const relatedProducts = product ? getRelatedProducts(product) : []
+
+  const handleAddToCart = () => {
+    if (product) addItem(product.id, 1)
+  }
+
+  const handleBuyNow = () => {
+    if (product) {
+      addItem(product.id, 1)
+      navigate('/checkout')
+    }
+  }
 
   if (!product) {
     return (
@@ -73,10 +87,18 @@ export default function Product() {
             </div>
 
             <div className="product-detail-actions">
-              <button type="button" className="btn btn-primary btn-lg btn-buy-now">
+              <button
+                type="button"
+                className="btn btn-primary btn-lg btn-buy-now"
+                onClick={handleBuyNow}
+              >
                 Buy it now
               </button>
-              <button type="button" className="btn btn-secondary btn-lg">
+              <button
+                type="button"
+                className="btn btn-secondary btn-lg"
+                onClick={handleAddToCart}
+              >
                 Add to cart
               </button>
               <Link to="/shop" className="btn btn-outline btn-lg">

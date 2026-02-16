@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { AdminStoreProvider } from './context/AdminStoreContext'
+import { CartProvider } from './context/CartContext'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -14,11 +15,15 @@ import AdminProducts from './pages/admin/AdminProducts'
 import AdminOrders from './pages/admin/AdminOrders'
 import AdminInventory from './pages/admin/AdminInventory'
 import AdminCustomers from './pages/admin/AdminCustomers'
+import Cart from './pages/Cart'
+import Checkout from './pages/Checkout'
+import CheckoutConfirmation from './pages/CheckoutConfirmation'
 import './App.css'
 
 export default function App() {
   return (
     <AdminStoreProvider>
+      <CartProvider>
       <div className="app">
         <Routes>
           <Route path="/admin" element={<AdminLayout />}>
@@ -39,6 +44,9 @@ export default function App() {
                   <Route path="/stainless-steel-fabrication" element={<StainlessSteelFabrication />} />
                   <Route path="/elevator-interior-solution" element={<ElevatorInteriorSolution />} />
                   <Route path="/inquiry" element={<Inquiry />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/checkout/confirmation/:orderId" element={<CheckoutConfirmation />} />
                 </Routes>
               </div>
               <Footer />
@@ -46,6 +54,7 @@ export default function App() {
           } />
         </Routes>
       </div>
+      </CartProvider>
     </AdminStoreProvider>
   )
 }

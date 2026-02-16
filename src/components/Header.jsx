@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useCart } from '../context/CartContext'
 import './Header.css'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
+  const { itemCount } = useCart()
 
   const navLinks = [
     { to: '/', label: 'Home' },
@@ -52,6 +54,18 @@ export default function Header() {
               )
             })}
           </ul>
+          <Link
+            to="/cart"
+            className="header-cart-link"
+            onClick={() => setMenuOpen(false)}
+            aria-label={`Cart, ${itemCount} items`}
+          >
+            <span className="header-cart-icon" aria-hidden="true">🛒</span>
+            <span className="header-cart-label">Cart</span>
+            {itemCount > 0 && (
+              <span className="header-cart-count">{itemCount}</span>
+            )}
+          </Link>
           <Link
             to="/shop"
             className="btn btn-primary header-cta"

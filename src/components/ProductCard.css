@@ -115,6 +115,13 @@
   justify-content: space-between;
   gap: 0.75rem;
   margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.product-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .product-card-price {
