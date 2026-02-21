@@ -9,6 +9,9 @@ build/
 .env
 .env.local
 .env.*.local
+backend/.env
+backend/.env.local
+backend/.env.*.local
 
 # Logs
 logs/
@@ -26,6 +29,11 @@ yarn-error.log*
 *~
 
 # OS
+.env
+.env.local
+.env.*.local
+.env.example
+
 .DS_Store
 Thumbs.db
 
@@ -34,3 +42,6 @@ Thumbs.db
 
 # Optional
 .cache/
+
+# Backend runtime data
+backend/data/
