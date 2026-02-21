@@ -5,8 +5,21 @@ import './CheckoutConfirmation.css'
 
 export default function CheckoutConfirmation() {
   const { orderId } = useParams()
-  const { orders } = useAdminStore()
+  const { orders, loading } = useAdminStore()
   const order = orders.find((o) => o.id === orderId)
+
+  if (loading && !order) {
+    return (
+      <main className="page confirmation-page">
+        <div className="container">
+          <div className="confirmation-card confirmation-not-found">
+            <h1>Loading order…</h1>
+            <p>Please wait.</p>
+          </div>
+        </div>
+      </main>
+    )
+  }
 
   if (!order) {
     return (

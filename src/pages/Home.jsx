@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { products } from '../data/products'
+import { useAdminStore } from '../context/AdminStoreContext'
 import ProductCard from '../components/ProductCard'
 import './Home.css'
-
-const featuredProducts = products.slice(0, 6)
 
 const services = [
   {
@@ -40,6 +38,9 @@ const services = [
 ]
 
 export default function Home() {
+  const { products } = useAdminStore()
+  const featuredProducts = products.slice(0, 6)
+
   useEffect(() => {
     if (window.location.hash === '#services') {
       document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })

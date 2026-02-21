@@ -1,23 +1,18 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { products } from '../data/products'
 import { useCart, useCartTotals } from '../context/CartContext'
 import { formatLKR } from '../utils/formatCurrency'
-import { PROMO_CODES } from '../data/promos'
+import { useAdminStore } from '../context/AdminStoreContext'
+import { usePromos } from '../context/PromosContext'
 import './Cart.css'
 
-function getProduct(id) {
-  return products.find((p) => p.id === id)
-}
-
-function getProductPrice(productId) {
-  const p = getProduct(productId)
-  return p ? p.price : 0
-}
-
 export default function Cart() {
+  const { products, loading } = useAdminStore()
+  const { PROMO_CODES } = usePromos()
+  const productsById = useMemo(() => new Map(products.map((p) => [p.id, p])), [products])
+
   const { items, removeItem, updateQty, setPromoCode, clearPromoCode, promoCode } = useCart()
-  const getPrice = (id) => getProductPrice(id)
+  const getPrice = (id) => productsById.get(id)?.price || 0
   const { subtotal, shipping, discount, total, promo } = useCartTotals(getPrice)
   const [promoInput, setPromoInput] = useState('')
   const [promoError, setPromoError] = useState('')
@@ -57,7 +52,7 @@ export default function Cart() {
         <div className="cart-layout">
           <div className="cart-items">
             {items.map(({ productId, qty }) => {
-              const product = getProduct(productId)
+              const product = productsById.get(productId)
               if (!product) return null
               return (
                 <div key={productId} className="cart-row">
@@ -110,6 +105,9 @@ export default function Cart() {
 
           <aside className="cart-summary">
             <h2 className="cart-summary-title">Order summary</h2>
+            {loading && products.length === 0 && (
+              <p style={{ marginTop: 0, color: '#666' }}>Loading…</p>
+            )}
             <div className="cart-summary-rows">
               <div className="cart-summary-row">
                 <span>Subtotal</span>

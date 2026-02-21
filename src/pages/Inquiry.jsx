@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { hdsApi } from '../api/hdsApi'
 import './Inquiry.css'
 
 const serviceOptions = [
@@ -14,6 +15,8 @@ const serviceOptions = [
 
 export default function Inquiry() {
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -28,10 +31,18 @@ export default function Inquiry() {
     setForm((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // In production: send to API or mailto
-    setSubmitted(true)
+    setSubmitting(true)
+    setError('')
+    try {
+      await hdsApi.submitInquiry(form)
+      setSubmitted(true)
+    } catch (err) {
+      setError(err?.message || 'Failed to send inquiry.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -139,13 +150,14 @@ export default function Inquiry() {
               />
             </div>
             <div className="form-actions">
-              <button type="submit" className="btn btn-primary btn-lg">
-                Send Inquiry
+              <button type="submit" className="btn btn-primary btn-lg" disabled={submitting}>
+                {submitting ? 'Sending…' : 'Send Inquiry'}
               </button>
               <Link to="/" className="btn btn-secondary btn-lg">
                 Cancel
               </Link>
             </div>
+            {error && <p style={{ marginTop: '0.75rem', color: '#b00020' }}>{error}</p>}
           </form>
         </div>
       </section>

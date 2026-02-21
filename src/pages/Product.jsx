@@ -1,16 +1,16 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { products } from '../data/products'
 import { formatLKR } from '../utils/formatCurrency'
 import { useCart } from '../context/CartContext'
+import { useAdminStore } from '../context/AdminStoreContext'
 import ProductCard from '../components/ProductCard'
 import './Product.css'
 
-function getRelatedProducts(currentProduct, limit = 4) {
-  const sameCategory = products.filter(
+function getRelatedProducts(allProducts, currentProduct, limit = 4) {
+  const sameCategory = allProducts.filter(
     (p) => p.id !== currentProduct.id && p.category === currentProduct.category
   )
   if (sameCategory.length >= limit) return sameCategory.slice(0, limit)
-  const others = products.filter(
+  const others = allProducts.filter(
     (p) => p.id !== currentProduct.id && !sameCategory.find((s) => s.id === p.id)
   )
   return [...sameCategory, ...others].slice(0, limit)
@@ -20,8 +20,9 @@ export default function Product() {
   const { productId } = useParams()
   const navigate = useNavigate()
   const { addItem } = useCart()
+  const { products, loading } = useAdminStore()
   const product = products.find((p) => p.id === productId)
-  const relatedProducts = product ? getRelatedProducts(product) : []
+  const relatedProducts = product ? getRelatedProducts(products, product) : []
 
   const handleAddToCart = () => {
     if (product) addItem(product.id, 1)
@@ -32,6 +33,17 @@ export default function Product() {
       addItem(product.id, 1)
       navigate('/checkout')
     }
+  }
+
+  if (!product && loading) {
+    return (
+      <main className="page product-page">
+        <div className="container product-not-found">
+          <h1>Loading product…</h1>
+          <p>Please wait.</p>
+        </div>
+      </main>
+    )
   }
 
   if (!product) {

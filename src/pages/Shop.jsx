@@ -1,14 +1,27 @@
 import { useState } from 'react'
-import { products } from '../data/products'
+import { useAdminStore } from '../context/AdminStoreContext'
 import ProductCard from '../components/ProductCard'
 import './Shop.css'
 
-const categories = ['All', ...new Set(products.map((p) => p.category))]
-
 export default function Shop() {
+  const { products, loading } = useAdminStore()
   const [filter, setFilter] = useState('All')
+  const categories = ['All', ...new Set(products.map((p) => p.category))]
   const filtered =
     filter === 'All' ? products : products.filter((p) => p.category === filter)
+
+  if (loading && products.length === 0) {
+    return (
+      <main className="shop">
+        <section className="shop-hero">
+          <div className="container">
+            <h1 className="shop-hero-title">Stainless Steel Kitchenware</h1>
+            <p className="shop-hero-subtitle">Loading products…</p>
+          </div>
+        </section>
+      </main>
+    )
+  }
 
   return (
     <main className="shop">

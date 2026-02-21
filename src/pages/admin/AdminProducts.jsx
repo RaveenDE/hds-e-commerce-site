@@ -14,19 +14,19 @@ export default function AdminProducts() {
   const categories = [...new Set(products.map((p) => p.category))].sort()
   const allTags = [...new Set(products.flatMap((p) => p.tags || []))].sort()
 
-  const handleSave = (data) => {
+  const handleSave = async (data) => {
     if (editingId) {
-      updateProduct(editingId, data)
+      await updateProduct(editingId, data)
       setEditingId(null)
     } else {
-      const id = addProduct(data)
-      navigate(`/admin/products?edit=${id}`, { replace: true })
+      const id = await addProduct(data)
+      if (id) navigate(`/admin/products?edit=${id}`, { replace: true })
     }
     setShowForm(false)
   }
 
-  const handleDelete = (id) => {
-    if (window.confirm('Delete this product?')) deleteProduct(id)
+  const handleDelete = async (id) => {
+    if (window.confirm('Delete this product?')) await deleteProduct(id)
     setEditingId(null)
     setShowForm(false)
   }

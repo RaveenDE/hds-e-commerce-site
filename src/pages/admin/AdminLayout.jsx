@@ -1,4 +1,5 @@
-import { Outlet, NavLink } from 'react-router-dom'
+import { Outlet, NavLink, Navigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 import './AdminLayout.css'
 
 const nav = [
@@ -10,12 +11,44 @@ const nav = [
 ]
 
 export default function AdminLayout() {
+  const location = useLocation()
+  const { loading, user, logout } = useAuth()
+
+  const returnTo = `${location.pathname}${location.search || ''}`
+
+  if (loading) {
+    return (
+      <div className="admin-layout">
+        <main className="admin-main">
+          <div style={{ padding: 24 }}>Loading…</div>
+        </main>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <Navigate to={`/login?returnTo=${encodeURIComponent(returnTo)}`} replace />
+  }
+
   return (
     <div className="admin-layout">
       <aside className="admin-sidebar">
         <div className="admin-sidebar-header">
           <h1 className="admin-sidebar-title">HDS Admin</h1>
           <a href="/" className="admin-sidebar-back">← Site</a>
+        </div>
+        <div style={{ padding: '0 16px 16px' }}>
+          <div style={{ fontSize: 12, opacity: 0.8, marginBottom: 8 }}>
+            Signed in as {user.email}
+          </div>
+          <button className="admin-btn admin-btn-secondary admin-btn-sm" type="button" onClick={logout}>
+            Logout
+          </button>
+          {!user.admin && (
+            <div style={{ fontSize: 12, color: '#b91c1c', marginTop: 8 }}>
+              Your account is not an admin. Add it to <code>ADMIN_EMAILS</code> on the backend.
+            </div>
+          )}
         </div>
         <nav className="admin-nav">
           {nav.map(({ to, end, label }) => (
@@ -31,7 +64,7 @@ export default function AdminLayout() {
         </nav>
       </aside>
       <main className="admin-main">
-        <Outlet />
+        {user.admin ? <Outlet /> : <div style={{ padding: 24 }}>Forbidden</div>}
       </main>
     </div>
   )

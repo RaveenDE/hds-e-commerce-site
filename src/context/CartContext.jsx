@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useCallback, useEffect } from 'react'
-import { PROMO_CODES, FREE_SHIPPING_THRESHOLD, DEFAULT_SHIPPING_COST } from '../data/promos'
+import { usePromos } from './PromosContext'
 
 const CART_STORAGE_KEY = 'hds-cart'
 
@@ -126,6 +126,7 @@ export function useCart() {
 /** Subtotal (before shipping & promo), shipping amount, discount amount, total */
 export function useCartTotals(getProductPrice) {
   const { items, promoCode } = useCart()
+  const { PROMO_CODES, FREE_SHIPPING_THRESHOLD, DEFAULT_SHIPPING_COST } = usePromos()
   const subtotal = items.reduce((sum, i) => sum + (getProductPrice(i.productId) || 0) * i.qty, 0)
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : DEFAULT_SHIPPING_COST
   const promo = PROMO_CODES[promoCode]

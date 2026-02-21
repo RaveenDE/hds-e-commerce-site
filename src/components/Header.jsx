@@ -1,22 +1,28 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 import './Header.css'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
   const { itemCount } = useCart()
+  const { user } = useAuth()
 
-  const navLinks = [
-    { to: '/', label: 'Home' },
-    { to: '/stainless-steel-fabrication', label: 'Stainless Steel' },
-    { to: '/shop', label: 'Shop' },
-    { to: '/elevator-interior-solution', label: 'Elevator Interior' },
-    { to: '/#services', label: 'Services' },
-    { to: '/#about', label: 'About' },
-    { to: '/admin', label: 'Admin' },
-  ]
+  const navLinks = useMemo(() => {
+    const links = [
+      { to: '/', label: 'Home' },
+      { to: '/stainless-steel-fabrication', label: 'Stainless Steel' },
+      { to: '/shop', label: 'Shop' },
+      { to: '/elevator-interior-solution', label: 'Elevator Interior' },
+      { to: '/#services', label: 'Services' },
+      { to: '/#about', label: 'About' },
+      { to: user ? '/account' : '/account/login', label: 'Account' },
+      { to: '/admin', label: 'Admin' },
+    ]
+    return links
+  }, [user])
 
   return (
     <header className="header">
@@ -40,7 +46,12 @@ export default function Header() {
         <nav className={`nav ${menuOpen ? 'nav-open' : ''}`}>
           <ul className="nav-list">
             {navLinks.map(({ to, label }) => {
-              const isActive = location.pathname === to || (to === '/#services' && location.pathname === '/') || (to === '/admin' && location.pathname.startsWith('/admin'))
+              const isActive =
+                location.pathname === to ||
+                (to === '/#services' && location.pathname === '/') ||
+                (to === '/admin' && location.pathname.startsWith('/admin')) ||
+                (to === '/account' && location.pathname.startsWith('/account')) ||
+                (to === '/account/login' && location.pathname.startsWith('/account'))
               return (
                 <li key={to}>
                   <Link

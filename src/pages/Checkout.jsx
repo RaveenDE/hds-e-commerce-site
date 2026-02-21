@@ -1,25 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { products } from '../data/products'
 import { useCart, useCartTotals } from '../context/CartContext'
 import { useAdminStore } from '../context/AdminStoreContext'
 import { formatLKR } from '../utils/formatCurrency'
-import { PROMO_CODES, FREE_SHIPPING_THRESHOLD, DEFAULT_SHIPPING_COST } from '../data/promos'
+import { usePromos } from '../context/PromosContext'
 import {
   getSavedAddresses,
   addSavedAddress,
   deleteSavedAddress,
 } from '../utils/addressStorage'
 import './Checkout.css'
-
-function getProduct(id) {
-  return products.find((p) => p.id === id)
-}
-
-function getProductPrice(productId) {
-  const p = getProduct(productId)
-  return p ? p.price : 0
-}
 
 const emptyAddress = {
   fullName: '',
@@ -34,8 +24,10 @@ const emptyAddress = {
 export default function Checkout() {
   const navigate = useNavigate()
   const { items, promoCode, setPromoCode, clearPromoCode, clearCart } = useCart()
-  const { addOrder } = useAdminStore()
-  const getPrice = (id) => getProductPrice(id)
+  const { addOrder, products } = useAdminStore()
+  const { PROMO_CODES, FREE_SHIPPING_THRESHOLD } = usePromos()
+  const productsById = useMemo(() => new Map(products.map((p) => [p.id, p])), [products])
+  const getPrice = (id) => productsById.get(id)?.price || 0
   const { subtotal, shipping, discount, total, promo } = useCartTotals(getPrice)
 
   const [checkoutType, setCheckoutType] = useState('guest') // 'guest' | 'account'
@@ -72,7 +64,7 @@ export default function Checkout() {
     }
   }
 
-  const handlePlaceOrder = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault()
     if (!email.trim()) {
       alert('Please enter your email.')
@@ -85,7 +77,7 @@ export default function Checkout() {
     setPlacing(true)
     const orderId = `ord-${Date.now()}`
     const orderItems = items.map(({ productId, qty }) => {
-      const p = getProduct(productId)
+      const p = productsById.get(productId)
       return {
         productId: p?.id,
         name: p?.name || 'Product',
@@ -107,19 +99,25 @@ export default function Checkout() {
       date: new Date().toISOString().slice(0, 10),
       shippingAddress: { ...address },
     }
-    addOrder(order)
-    if (saveAddress) {
-      addSavedAddress(address)
+    try {
+      const savedId = await addOrder(order)
+      if (saveAddress) addSavedAddress(address)
+      clearCart()
+      navigate(`/checkout/confirmation/${savedId || orderId}`)
+    } catch (err) {
+      alert(err?.message || 'Failed to place order.')
+    } finally {
+      setPlacing(false)
     }
-    clearCart()
-    setPlacing(false)
-    navigate(`/checkout/confirmation/${orderId}`)
   }
 
-  if (items.length === 0 && !placing) {
-    navigate('/cart')
-    return null
-  }
+  useEffect(() => {
+    if (items.length === 0 && !placing) {
+      navigate('/cart')
+    }
+  }, [items.length, placing, navigate])
+
+  if (items.length === 0 && !placing) return null
 
   return (
     <main className="page checkout-page">
@@ -303,7 +301,7 @@ export default function Checkout() {
             <h2 className="checkout-summary-title">Order summary</h2>
             <div className="checkout-summary-items">
               {items.map(({ productId, qty }) => {
-                const product = getProduct(productId)
+                const product = productsById.get(productId)
                 if (!product) return null
                 return (
                   <div key={productId} className="checkout-summary-row">

@@ -3,6 +3,24 @@ import './StainlessSteelFabrication.css'
 
 const gallery = [
   {
+    id: 'work-table',
+    image: '/fabrication/work-table.png',
+    title: 'Stainless Steel Work Tables',
+    description: 'Two-tier utility tables with flat top surface and lower storage shelf. Brushed stainless steel, square-profile legs with adjustable feet. Ideal for prep, assembly, and commercial kitchens.',
+  },
+  {
+    id: 'double-sink-unit',
+    image: '/fabrication/double-sink-unit.png',
+    title: 'Double-Basin Sink Units',
+    description: 'Commercial-grade freestanding sink unit with two deep rectangular basins and dual gooseneck faucets. Integrated backsplash and sturdy open-frame stand with square tubing.',
+  },
+  {
+    id: 'sink-refrigeration-unit',
+    image: '/fabrication/sink-refrigeration-unit.png',
+    title: 'Sink & Refrigeration Units',
+    description: 'Combination sink with integrated under-counter refrigeration or chilling unit. Single-basin sink, drainboard, digital temperature display, and mobile base with casters.',
+  },
+  {
     id: 'cabinet-storage',
     image: '/fabrication/cabinet-storage.png',
     title: 'Mobile Storage Cabinets',
@@ -74,7 +92,7 @@ export default function StainlessSteelFabrication() {
                 <div className="fabrication-card-image-wrap">
                   <img
                     src={item.image}
-                    alt=""
+                    alt={item.title}
                     className="fabrication-card-image"
                   />
                 </div>

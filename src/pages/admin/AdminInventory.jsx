@@ -43,8 +43,14 @@ export default function AdminInventory() {
         if (product) updates.push({ sku: product.sku, id: product.id, stock })
       }
       if (updates.length) {
-        bulkUpdateInventory(updates)
-        setImportResult({ success: true, count: updates.length })
+        Promise.resolve(bulkUpdateInventory(updates)).then(
+          () => setImportResult({ success: true, count: updates.length }),
+          (e) =>
+            setImportResult({
+              success: false,
+              message: e?.message || 'Import failed.',
+            })
+        )
       } else {
         setImportResult({ success: false, message: 'No matching SKU/id found in CSV.' })
       }
@@ -128,7 +134,9 @@ export default function AdminInventory() {
                         className="admin-btn admin-btn-secondary admin-btn-sm"
                         onClick={() => {
                           const v = prompt('New stock level:', p.stock)
-                          if (v !== null && !isNaN(Number(v))) updateProduct(p.id, { stock: Number(v) })
+                          if (v !== null && !isNaN(Number(v))) {
+                            Promise.resolve(updateProduct(p.id, { stock: Number(v) }))
+                          }
                         }}
                       >
                         Update
@@ -170,7 +178,9 @@ export default function AdminInventory() {
                       className="admin-btn admin-btn-secondary admin-btn-sm"
                       onClick={() => {
                         const v = prompt('New stock level:', p.stock)
-                        if (v !== null && !isNaN(Number(v))) updateProduct(p.id, { stock: Number(v) })
+                        if (v !== null && !isNaN(Number(v))) {
+                          Promise.resolve(updateProduct(p.id, { stock: Number(v) }))
+                        }
                       }}
                     >
                       Edit stock
