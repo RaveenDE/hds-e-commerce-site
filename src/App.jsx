@@ -9,6 +9,7 @@ import Home from './pages/Home'
 import Shop from './pages/Shop'
 import StainlessSteelFabrication from './pages/StainlessSteelFabrication'
 import ElevatorInteriorSolution from './pages/ElevatorInteriorSolution'
+import RailingBalustrade from './pages/RailingBalustrade'
 import Inquiry from './pages/Inquiry'
 import Product from './pages/Product'
 import Login from './pages/Login'
@@ -63,6 +64,10 @@ export default function App() {
                           <Route
                             path="/elevator-interior-solution"
                             element={<ElevatorInteriorSolution />}
+                          />
+                          <Route
+                            path="/railing-balustrade"
+                            element={<RailingBalustrade />}
                           />
                           <Route path="/inquiry" element={<Inquiry />} />
                           <Route path="/cart" element={<Cart />} />

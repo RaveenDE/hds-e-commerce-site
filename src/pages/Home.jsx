@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useAdminStore } from '../context/AdminStoreContext'
-import ProductCard from '../components/ProductCard'
 import './Home.css'
 
 const services = [
@@ -35,12 +33,191 @@ const services = [
     description: 'Bespoke elevator interiors in stainless steel, glass, and premium finishes. Design, manufacture, and install.',
     icon: '⬢',
   },
+  {
+    id: 'railing',
+    title: 'Railing & Balustrade',
+    description: 'Custom metal and wood railings for stairs, decks, and platforms. Stainless steel, powder-coated steel, and integrated wood-and-metal systems.',
+    icon: '▤',
+  },
+]
+
+const showcaseImages = [
+  {
+    id: 'fab-work-table',
+    image: '/fabrication/work-table.png',
+    alt: 'Stainless steel work table',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'fab-double-sink-unit',
+    image: '/fabrication/double-sink-unit.png',
+    alt: 'Double-basin stainless steel sink unit',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'fab-sink-refrigeration-unit',
+    image: '/fabrication/sink-refrigeration-unit.png',
+    alt: 'Sink and refrigeration unit',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'fab-cabinet-storage',
+    image: '/fabrication/cabinet-storage.png',
+    alt: 'Mobile stainless steel storage cabinet',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'fab-cabinet-shelving',
+    image: '/fabrication/cabinet-shelving.png',
+    alt: 'Stainless steel shelving and holding unit',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'fab-sink-unit',
+    image: '/fabrication/sink-unit.png',
+    alt: 'Commercial stainless steel sink unit',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'fab-cooktop-station',
+    image: '/fabrication/cooktop-station.png',
+    alt: 'Stainless steel cooktop station',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'fab-prep-unit',
+    image: '/fabrication/prep-unit.png',
+    alt: 'Prep and warming unit',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'fab-exhaust-hood',
+    image: '/fabrication/exhaust-hood.png',
+    alt: 'Stainless steel commercial exhaust hood',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'fab-wall-sink',
+    image: '/fabrication/wall-sink.png',
+    alt: 'Wall-mounted stainless steel sink',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'elev-control-panel',
+    image: '/elevator/interior-control-panel.png',
+    alt: 'Elevator interior control panel and stainless steel wall panels',
+    to: '/elevator-interior-solution',
+  },
+  {
+    id: 'elev-checkered',
+    image: '/elevator/interior-checkered.png',
+    alt: 'Elevator interior with checkered flooring and brushed metal walls',
+    to: '/elevator-interior-solution',
+  },
+  {
+    id: 'elev-marble-wood',
+    image: '/elevator/interior-marble-wood.png',
+    alt: 'Elevator interior with marble and wood finishes',
+    to: '/elevator-interior-solution',
+  },
+  {
+    id: 'elev-blue-led',
+    image: '/elevator/interior-blue-led.png',
+    alt: 'Elevator interior with blue LED accents',
+    to: '/elevator-interior-solution',
+  },
+  {
+    id: 'elev-luxury-gold',
+    image: '/elevator/interior-luxury-gold.png',
+    alt: 'Luxury elevator interior with gold and marble finishes',
+    to: '/elevator-interior-solution',
+  },
+  {
+    id: 'railing-1',
+    image: '/railing/railing-1.png',
+    alt: 'Modern stainless steel staircase railing with geometric balusters',
+    to: '/railing-balustrade',
+  },
+  {
+    id: 'railing-2',
+    image: '/railing/railing-2.png',
+    alt: 'Open-tread staircase with wood handrails and black metal balusters',
+    to: '/railing-balustrade',
+  },
+  {
+    id: 'railing-3',
+    image: '/railing/railing-3.png',
+    alt: 'Wood and stainless steel railing with horizontal rod infill',
+    to: '/railing-balustrade',
+  },
+  {
+    id: 'railing-4',
+    image: '/railing/railing-4.png',
+    alt: 'Deck and stair railing with wood and metal combination',
+    to: '/railing-balustrade',
+  },
+]
+
+const featuredStatic = [
+  {
+    id: 'feat-1',
+    image: '/featured/featured-1.png',
+    title: 'Stainless Steel Stair Railing',
+    description: 'Modern staircase with stainless steel handrail and horizontal rod balustrade. Clean lines and durable construction for interior or exterior use.',
+    to: '/railing-balustrade',
+  },
+  {
+    id: 'feat-2',
+    image: '/featured/featured-2.png',
+    title: 'L-Shaped Kitchen Counter',
+    description: 'Custom stainless steel L-shaped counter with integrated sink, gas hob, and range hood. Ideal for commercial kitchens and hotel installations.',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'feat-3',
+    image: '/featured/featured-3.png',
+    title: 'Dual-Sink Unit',
+    description: 'Professional dual-basin stainless steel sink unit with backsplash and gooseneck faucets. Built for heavy-duty commercial use.',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'feat-4',
+    image: '/featured/featured-4.png',
+    title: 'Modular Stainless Cabinetry',
+    description: 'Upper and lower cabinets with tall utility unit. Brushed stainless steel, minimal handles, suitable for kitchens and labs.',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'feat-5',
+    image: '/featured/featured-5.png',
+    title: 'Commercial Kitchen Setup',
+    description: 'L-shaped base cabinets with continuous countertop and wall-mounted stainless steel shelving. Full commercial kitchen fit-out.',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'feat-6',
+    image: '/featured/featured-6.png',
+    title: 'Gas Burner Workstation',
+    description: 'Stainless steel workstation with integrated two-burner gas stove. Professional-grade for hotels, bakeries, and restaurants.',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'feat-7',
+    image: '/featured/featured-7.png',
+    title: 'Mobile Storage Cabinet',
+    description: 'Tall stainless steel cabinet on casters with double doors. Easy to move for flexible kitchen and workshop layouts.',
+    to: '/stainless-steel-fabrication',
+  },
+  {
+    id: 'feat-8',
+    image: '/featured/featured-8.png',
+    title: 'Luxury Elevator Interior',
+    description: 'Elevator cab with marble-style panels, gold trim, and premium finishes. Bespoke design and installation.',
+    to: '/elevator-interior-solution',
+  },
 ]
 
 export default function Home() {
-  const { products } = useAdminStore()
-  const featuredProducts = products.slice(0, 6)
-
   useEffect(() => {
     if (window.location.hash === '#services') {
       document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })
@@ -66,10 +243,7 @@ export default function Home() {
             Stainless steel fabrication, hotel & bakery equipment, steel fabrication, and elevator renovation—delivered with precision and reliability.
           </p>
           <div className="hero-actions">
-            <Link to="/shop" className="btn btn-primary btn-lg">
-              Shop
-            </Link>
-            <a href="#services" className="btn btn-secondary btn-lg">
+            <a href="#services" className="btn btn-primary btn-lg">
               Our Services
             </a>
           </div>
@@ -105,6 +279,13 @@ export default function Home() {
                     <p className="service-desc">{s.description}</p>
                     <span className="service-card-link">View examples →</span>
                   </Link>
+                ) : s.id === 'railing' ? (
+                  <Link to="/railing-balustrade" className="service-card-inner">
+                    <div className="service-icon">{s.icon}</div>
+                    <h3 className="service-title">{s.title}</h3>
+                    <p className="service-desc">{s.description}</p>
+                    <span className="service-card-link">View examples →</span>
+                  </Link>
                 ) : (
                   <>
                     <div className="service-icon">{s.icon}</div>
@@ -121,20 +302,57 @@ export default function Home() {
       <section id="products" className="section products-home">
         <div className="container">
           <header className="section-header">
-            <h2 className="section-title">Featured Kitchenware</h2>
+            <h2 className="section-title">Featured Work</h2>
             <p className="section-subtitle">
-              Professional stainless steel equipment for commercial kitchens, hotels, and bakeries.
+              A quick look at our stainless steel fabrication, elevator interiors, and railing work.
             </p>
           </header>
-          <div className="products-home-grid">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+
+          <div className="featured-static-grid" aria-label="Featured work highlights">
+            {featuredStatic.map((item) => (
+              <article key={item.id} className="featured-static-card">
+                <div className="featured-static-card-image-wrap">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="featured-static-card-image"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="featured-static-card-body">
+                  <h3 className="featured-static-card-title">{item.title}</h3>
+                  <p className="featured-static-card-desc">{item.description}</p>
+                  <div className="featured-static-card-actions">
+                    <Link to={item.to} className="btn featured-static-btn-view">
+                      View More +
+                    </Link>
+                    <Link to="/inquiry" className="btn featured-static-btn-cta">
+                      Get a Quote
+                    </Link>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
-          <div className="products-home-cta">
-            <Link to="/shop" className="btn btn-primary btn-lg">
-              View All Products
-            </Link>
+
+          <div className="showcase-marquee" aria-label="Featured work image gallery">
+            <div className="showcase-track">
+              {[...showcaseImages, ...showcaseImages].map((item, idx) => (
+                <Link
+                  key={`${item.id}-${idx}`}
+                  to={item.to}
+                  className="showcase-slide"
+                  aria-label={`View ${item.to === '/stainless-steel-fabrication' ? 'stainless steel fabrication' : item.to === '/elevator-interior-solution' ? 'elevator interior' : item.to === '/railing-balustrade' ? 'railing' : 'examples'} examples`}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    className="showcase-slide-image"
+                    loading="lazy"
+                  />
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -142,20 +360,20 @@ export default function Home() {
       <section id="about" className="section about">
         <div className="container about-inner">
           <div className="about-content">
-            <h2 className="section-title">Built on Quality & Trust</h2>
+            <h2 className="section-title">About Us</h2>
             <p className="about-lead">
-              HDS Engineering & Contractors brings decades of expertise in stainless steel and steel fabrication, commercial kitchen equipment, and elevator solutions.
+              Hamilton De Silva & Sons (HDS Engineering & Contractors) is a Sri Lankan engineering company established in 1996, specializing in stainless steel fabrication, hotel and bakery equipment, elevator renovations, elevator interior solutions, and construction interior work.
             </p>
             <p className="about-text">
-              We work with hotels, bakeries, restaurants, and building owners to design, fabricate, and install equipment and interiors that meet the highest standards. Every project is backed by our commitment to durability, hygiene, and aesthetics.
+              With decades of industry experience, we are committed to delivering high-quality, durable, and customized engineering solutions through skilled craftsmanship and professional service.
             </p>
-            <Link to="/shop" className="btn btn-primary">
-              Explore Products
-            </Link>
           </div>
           <div className="about-visual">
-            <div className="about-visual-block" />
-            <div className="about-visual-block accent" />
+            <img
+              src="/about-hds.png"
+              alt="HDS Engineering & Contractors - cityscape"
+              className="about-visual-image"
+            />
           </div>
         </div>
       </section>

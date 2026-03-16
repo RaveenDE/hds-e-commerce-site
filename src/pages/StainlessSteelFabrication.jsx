@@ -62,6 +62,36 @@ const gallery = [
     title: 'Wall-Mounted Sink Units',
     description: 'Single-basin stainless steel sink with integrated backsplash and chrome faucet. For utility, hand-wash, or compact commercial use.',
   },
+  {
+    id: 'counter-sink-cabinets',
+    image: '/fabrication/counter-sink-cabinets.png',
+    title: 'Counter Unit with Integrated Sink',
+    description: 'Freestanding unit with light countertop, integrated stainless steel sink and gooseneck faucet. Brushed stainless steel base with six cabinet and drawer sections and recessed kick plate.',
+  },
+  {
+    id: 'l-shaped-cooktop-sink',
+    image: '/fabrication/l-shaped-cooktop-sink.png',
+    title: 'L-Shaped Kitchen Counter',
+    description: 'L-shaped stainless steel counter with integrated sink and faucet on one arm and built-in gas cooktop with four burners on the other. Range hood above; ideal for commercial or high-end residential kitchens.',
+  },
+  {
+    id: 'storage-cabinet-open',
+    image: '/fabrication/storage-cabinet-open.png',
+    title: 'Stainless Steel Storage Cabinet',
+    description: 'Two-door cabinet with full interior in brushed stainless steel. Two fixed shelves, robust hinges, and seamless interior. Suited for kitchens, labs, and commercial settings.',
+  },
+  {
+    id: 'modular-cabinetry',
+    image: '/fabrication/modular-cabinetry.png',
+    title: 'Modular Stainless Cabinetry',
+    description: 'Complete cabinetry system: three upper wall cabinets, light countertop with backsplash, three base cabinets, and a full-height tall unit. Brushed stainless steel throughout with handle-less doors.',
+  },
+  {
+    id: 'commercial-kitchen-lshape',
+    image: '/fabrication/commercial-kitchen-lshape.png',
+    title: 'Commercial L-Shaped Kitchen',
+    description: 'L-shaped run of stainless steel base cabinets with continuous countertops and two tiers of wall-mounted open shelving. Triangular brackets; ideal for commercial kitchens and bakeries.',
+  },
 ]
 
 export default function StainlessSteelFabrication() {

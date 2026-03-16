@@ -40,6 +40,19 @@ function safeReturnTo(value) {
   return value
 }
 
+function getFrontendOrigin(req) {
+  if (process.env.FRONTEND_ORIGIN) return process.env.FRONTEND_ORIGIN
+  const ref = req.get('referer')
+  if (ref) {
+    try {
+      return new URL(ref).origin
+    } catch {
+      // ignore
+    }
+  }
+  return 'http://localhost:5173'
+}
+
 export async function startGoogleLogin(req, res, next) {
   try {
     const config = await getGoogleConfig()
@@ -50,7 +63,8 @@ export async function startGoogleLogin(req, res, next) {
     const code_challenge = await client.calculatePKCECodeChallenge(code_verifier)
     const returnTo = safeReturnTo(req.query.returnTo)
 
-    req.session.oidc = { state, nonce, code_verifier, returnTo }
+    const frontendOrigin = getFrontendOrigin(req)
+    req.session.oidc = { state, nonce, code_verifier, returnTo, frontendOrigin }
 
     const redirect_uri = process.env.GOOGLE_REDIRECT_URI
     const url = client.buildAuthorizationUrl(config, {
@@ -71,7 +85,8 @@ export async function startGoogleLogin(req, res, next) {
 
 export async function finishGoogleLogin(req, res, next) {
   try {
-    const { state, nonce, code_verifier, returnTo } = req.session.oidc || {}
+    const { state, nonce, code_verifier, returnTo, frontendOrigin } =
+      req.session.oidc || {}
     if (!state || !nonce || !code_verifier) {
       return res.status(400).json({ error: 'Missing login session; try again.' })
     }
@@ -138,8 +153,7 @@ export async function finishGoogleLogin(req, res, next) {
     }
     delete req.session.oidc
 
-    const frontendOrigin = process.env.FRONTEND_ORIGIN || 'http://localhost:5173'
-    res.redirect(`${frontendOrigin}${safeReturnTo(returnTo)}`)
+    res.redirect(`${frontendOrigin || getFrontendOrigin(req)}${safeReturnTo(returnTo)}`)
   } catch (e) {
     next(e)
   }

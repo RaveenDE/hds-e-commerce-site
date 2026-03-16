@@ -17,7 +17,15 @@ const PORT = process.env.PORT || 3001
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:5173'
 
 app.set('trust proxy', 1)
-app.use(cors({ origin: FRONTEND_ORIGIN, credentials: true }))
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? FRONTEND_ORIGIN
+        : true,
+    credentials: true,
+  })
+)
 app.use(express.json())
 
 app.use(
