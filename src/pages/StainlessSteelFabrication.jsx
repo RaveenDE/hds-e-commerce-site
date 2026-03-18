@@ -145,9 +145,6 @@ export default function StainlessSteelFabrication() {
             <Link to="/shop" className="btn btn-primary btn-lg">
               Shop Kitchenware
             </Link>
-            <a href="mailto:info@hds.com" className="btn btn-secondary btn-lg">
-              Get a Quote
-            </a>
           </div>
         </div>
       </section>

@@ -59,7 +59,7 @@ Build and upload the contents of `dist/` to the bucket:
 
 ```bash
 # Set your bucket name (PowerShell)
-$env:BUCKET_NAME = "YOUR_BUCKET_NAME"
+$env:BUCKET_NAME = "hds-website-hosting-bucket"
 node scripts/deploy-s3.mjs
 
 # Or one-liner (PowerShell)

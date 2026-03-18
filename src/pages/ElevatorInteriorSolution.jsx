@@ -81,9 +81,6 @@ export default function ElevatorInteriorSolution() {
           <p className="elevator-cta-text">
             Planning an elevator renovation or new cab interior? We provide design, materials, and installation.
           </p>
-          <a href="mailto:info@hds.com" className="btn btn-primary btn-lg">
-            Get a Quote
-          </a>
         </div>
       </section>
     </main>

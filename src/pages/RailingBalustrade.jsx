@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import './RailingBalustrade.css'
 
 const gallery = [
@@ -75,14 +74,6 @@ export default function RailingBalustrade() {
           <p className="railing-cta-text">
             Need a custom railing design or quote? We work with builders, architects, and property owners for residential and commercial projects.
           </p>
-          <div className="railing-cta-actions">
-            <Link to="/inquiry" className="btn btn-primary btn-lg">
-              Get a Quote
-            </Link>
-            <a href="mailto:info@hds.com" className="btn btn-secondary btn-lg">
-              Contact Us
-            </a>
-          </div>
         </div>
       </section>
     </main>

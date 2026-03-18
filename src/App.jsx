@@ -11,16 +11,11 @@ import StainlessSteelFabrication from './pages/StainlessSteelFabrication'
 import ElevatorInteriorSolution from './pages/ElevatorInteriorSolution'
 import RailingBalustrade from './pages/RailingBalustrade'
 import Inquiry from './pages/Inquiry'
+import Careers from './pages/Careers'
 import Product from './pages/Product'
 import Login from './pages/Login'
 import AccountLogin from './pages/AccountLogin'
 import Account from './pages/Account'
-import AdminLayout from './pages/admin/AdminLayout'
-import AdminDashboard from './pages/admin/AdminDashboard'
-import AdminProducts from './pages/admin/AdminProducts'
-import AdminOrders from './pages/admin/AdminOrders'
-import AdminInventory from './pages/admin/AdminInventory'
-import AdminCustomers from './pages/admin/AdminCustomers'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import CheckoutConfirmation from './pages/CheckoutConfirmation'
@@ -34,13 +29,6 @@ export default function App() {
           <CartProvider>
             <div className="app">
               <Routes>
-                <Route path="/admin" element={<AdminLayout />}>
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="products" element={<AdminProducts />} />
-                  <Route path="orders" element={<AdminOrders />} />
-                  <Route path="inventory" element={<AdminInventory />} />
-                  <Route path="customers" element={<AdminCustomers />} />
-                </Route>
                 <Route
                   path="*"
                   element={
@@ -49,14 +37,7 @@ export default function App() {
                       <div className="app-main">
                         <Routes>
                           <Route path="/" element={<Home />} />
-                          <Route path="/shop" element={<Shop />} />
-                          <Route
-                            path="/shop/product/:productId"
-                            element={<Product />}
-                          />
-                          <Route path="/login" element={<Login />} />
-                          <Route path="/account/login" element={<AccountLogin />} />
-                          <Route path="/account" element={<Account />} />
+                         
                           <Route
                             path="/stainless-steel-fabrication"
                             element={<StainlessSteelFabrication />}
@@ -70,6 +51,7 @@ export default function App() {
                             element={<RailingBalustrade />}
                           />
                           <Route path="/inquiry" element={<Inquiry />} />
+                          <Route path="/careers" element={<Careers />} />
                           <Route path="/cart" element={<Cart />} />
                           <Route path="/checkout" element={<Checkout />} />
                           <Route

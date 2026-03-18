@@ -10,7 +10,8 @@ export default function Header() {
     { to: '/', label: 'Home' },
     { to: '/#services', label: 'Services' },
     { to: '/#about', label: 'About Us' },
-    { to: '/inquiry', label: 'Contact Us' },
+    { to: '/careers', label: 'Careers' },
+    { to: '/#contact', label: 'Contact Us' },
   ], [])
 
   return (
@@ -39,13 +40,26 @@ export default function Header() {
                 (to === '/' && location.pathname === '/' && !location.hash) ||
                 (to === '/#services' && location.pathname === '/' && location.hash === '#services') ||
                 (to === '/#about' && location.pathname === '/' && location.hash === '#about') ||
-                (to === '/inquiry' && location.pathname === '/inquiry')
+                (to === '/#contact' && location.pathname === '/' && location.hash === '#contact') ||
+                (to === '/careers' && location.pathname === '/careers')
+              const handleNavClick = () => {
+                setMenuOpen(false)
+                if (location.pathname === '/' && to === '/#services') {
+                  document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })
+                }
+                if (location.pathname === '/' && to === '/#about') {
+                  document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+                }
+                if (location.pathname === '/' && to === '/#contact') {
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+                }
+              }
               return (
                 <li key={to}>
                   <Link
                     to={to}
                     className={isActive ? 'nav-link active' : 'nav-link'}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={handleNavClick}
                   >
                     {label}
                   </Link>

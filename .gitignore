@@ -45,3 +45,6 @@ Thumbs.db
 
 # Backend runtime data
 backend/data/
+
+# Lambda deploy zip
+backend/lambda/*.zip

@@ -225,6 +225,9 @@ export default function Home() {
     if (window.location.hash === '#about') {
       document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
     }
+    if (window.location.hash === '#contact') {
+      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })
+    }
   }, [])
 
   return (
@@ -326,9 +329,6 @@ export default function Home() {
                     <Link to={item.to} className="btn featured-static-btn-view">
                       View More +
                     </Link>
-                    <Link to="/inquiry" className="btn featured-static-btn-cta">
-                      Get a Quote
-                    </Link>
                   </div>
                 </div>
               </article>
@@ -384,14 +384,6 @@ export default function Home() {
           <p className="cta-text">
             Get a quote for fabrication, equipment, or elevator renovation. Our team will respond within 24 hours.
           </p>
-          <div className="cta-actions">
-            <Link to="/inquiry" className="btn btn-primary btn-lg">
-              Send Inquiry
-            </Link>
-            <a href="mailto:info@hds.com" className="btn btn-secondary btn-lg">
-              Contact Us
-            </a>
-          </div>
         </div>
       </section>
     </main>
