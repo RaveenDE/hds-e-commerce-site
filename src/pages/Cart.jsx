@@ -4,6 +4,7 @@ import { useCart, useCartTotals } from '../context/CartContext'
 import { formatLKR } from '../utils/formatCurrency'
 import { useAdminStore } from '../context/AdminStoreContext'
 import { usePromos } from '../context/PromosContext'
+import SEO from '../components/SEO'
 import './Cart.css'
 
 export default function Cart() {
@@ -32,6 +33,12 @@ export default function Cart() {
   if (items.length === 0) {
     return (
       <main className="page cart-page">
+        <SEO
+          title="Shopping Cart"
+          description="Your HDS Engineering cart."
+          path="/cart"
+          noindex
+        />
         <div className="container">
           <h1 className="cart-title">Your cart</h1>
           <div className="cart-empty">
@@ -47,6 +54,12 @@ export default function Cart() {
 
   return (
     <main className="page cart-page">
+      <SEO
+        title="Shopping Cart"
+        description="Review items in your cart before checkout."
+        path="/cart"
+        noindex
+      />
       <div className="container">
         <h1 className="cart-title">Your cart</h1>
         <div className="cart-layout">

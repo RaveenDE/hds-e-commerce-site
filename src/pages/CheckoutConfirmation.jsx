@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useAdminStore } from '../context/AdminStoreContext'
 import { formatLKR } from '../utils/formatCurrency'
+import SEO from '../components/SEO'
 import './CheckoutConfirmation.css'
 
 export default function CheckoutConfirmation() {
@@ -11,6 +12,12 @@ export default function CheckoutConfirmation() {
   if (loading && !order) {
     return (
       <main className="page confirmation-page">
+        <SEO
+          title="Order confirmation"
+          description="Order confirmation."
+          path="/checkout/confirmation"
+          noindex
+        />
         <div className="container">
           <div className="confirmation-card confirmation-not-found">
             <h1>Loading order…</h1>
@@ -24,6 +31,12 @@ export default function CheckoutConfirmation() {
   if (!order) {
     return (
       <main className="page confirmation-page">
+        <SEO
+          title="Order not found"
+          description="Order confirmation."
+          path="/checkout/confirmation"
+          noindex
+        />
         <div className="container">
           <div className="confirmation-card confirmation-not-found">
             <h1>Order not found</h1>
@@ -41,6 +54,12 @@ export default function CheckoutConfirmation() {
 
   return (
     <main className="page confirmation-page">
+      <SEO
+        title="Order confirmed"
+        description="Thank you for your order with HDS Engineering & Contractors."
+        path="/checkout/confirmation"
+        noindex
+      />
       <div className="container">
         <div className="confirmation-card">
           <div className="confirmation-success" aria-hidden="true">

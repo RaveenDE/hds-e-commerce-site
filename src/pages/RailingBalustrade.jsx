@@ -1,3 +1,4 @@
+import SEO from '../components/SEO'
 import './RailingBalustrade.css'
 
 const gallery = [
@@ -30,6 +31,11 @@ const gallery = [
 export default function RailingBalustrade() {
   return (
     <main className="page railing-page">
+      <SEO
+        title="Railing & Balustrade"
+        description="Custom metal and wood railings for stairs, decks, and platforms. Stainless steel, powder-coated steel, and integrated wood-and-metal systems built to code."
+        path="/railing-balustrade"
+      />
       <section className="railing-hero">
         <div className="container">
           <h1 className="railing-hero-title">Railing & Balustrade</h1>

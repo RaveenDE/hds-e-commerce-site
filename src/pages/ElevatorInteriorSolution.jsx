@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import SEO from '../components/SEO'
 import './ElevatorInteriorSolution.css'
 
 const gallery = [
@@ -37,6 +38,11 @@ const gallery = [
 export default function ElevatorInteriorSolution() {
   return (
     <main className="page elevator-page">
+      <SEO
+        title="Elevator Interior Solution"
+        description="Bespoke elevator cabin interiors in stainless steel, glass, marble, wood, and premium finishes. Design, manufacture, and installation for commercial and residential buildings."
+        path="/elevator-interior-solution"
+      />
       <section className="elevator-hero">
         <div className="container">
           <h1 className="elevator-hero-title">Elevator Interior Solution</h1>

@@ -1,9 +1,15 @@
 import { Link } from 'react-router-dom'
+import SEO from '../components/SEO'
 import './Careers.css'
 
 export default function Careers() {
   return (
     <main className="page careers-page">
+      <SEO
+        title="Careers"
+        description="Join HDS Engineering & Contractors. Careers in metal fabrication, welding, engineering, and project delivery. View current vacancies and apply."
+        path="/careers"
+      />
       <section className="careers-hero">
         <div className="container">
           <h1 className="careers-hero-title">Careers</h1>

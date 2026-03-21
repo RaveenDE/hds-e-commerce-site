@@ -1,6 +1,11 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import SEO from '../components/SEO'
+import { SITE_NAME, getCanonicalBase } from '../config/site'
 import './Home.css'
+
+const HOME_DESCRIPTION =
+  'Stainless steel fabrication, hotel & bakery equipment, steel fabrication, elevator renovation, bespoke elevator interiors, and custom railings. HDS Engineering & Contractors delivers precision manufacturing and installation.'
 
 const services = [
   {
@@ -230,8 +235,26 @@ export default function Home() {
     }
   }, [])
 
+  const organizationJsonLd = useMemo(() => {
+    const url = getCanonicalBase()
+    if (!url) return null
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: SITE_NAME,
+      description: HOME_DESCRIPTION,
+      url,
+    }
+  }, [])
+
   return (
     <main className="home">
+      <SEO
+        fullTitle="HDS Engineering & Contractors | Stainless Steel & Kitchen Equipment"
+        description={HOME_DESCRIPTION}
+        path="/"
+        jsonLd={organizationJsonLd}
+      />
       <section className="hero">
         <div className="hero-bg" aria-hidden="true">
           <img src="/hero-kitchen.jpg" alt="" className="hero-bg-image" />

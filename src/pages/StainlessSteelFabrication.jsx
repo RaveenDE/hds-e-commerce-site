@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import SEO from '../components/SEO'
 import './StainlessSteelFabrication.css'
 
 const gallery = [
@@ -97,6 +98,11 @@ const gallery = [
 export default function StainlessSteelFabrication() {
   return (
     <main className="page fabrication-page">
+      <SEO
+        title="Stainless Steel Fabrication"
+        description="Custom stainless steel fabrication for commercial kitchens, sinks, work tables, cabinets, hoods, and industrial applications. Precision-cut, welded, and finished by HDS Engineering & Contractors."
+        path="/stainless-steel-fabrication"
+      />
       <section className="fabrication-hero">
         <div className="container">
           <h1 className="fabrication-hero-title">Stainless Steel Fabrication</h1>

@@ -9,6 +9,7 @@ import {
   addSavedAddress,
   deleteSavedAddress,
 } from '../utils/addressStorage'
+import SEO from '../components/SEO'
 import './Checkout.css'
 
 const emptyAddress = {
@@ -121,6 +122,12 @@ export default function Checkout() {
 
   return (
     <main className="page checkout-page">
+      <SEO
+        title="Checkout"
+        description="Complete your order with HDS Engineering & Contractors."
+        path="/checkout"
+        noindex
+      />
       <div className="container">
         <h1 className="checkout-title">Checkout</h1>
 
