@@ -1,7 +1,7 @@
 .footer {
   background: var(--hds-navy);
   color: var(--hds-white);
-  padding: 3rem 0 1.5rem;
+  padding: 1.25rem 0 1.5rem;
   margin-top: auto;
 }
 
@@ -29,6 +29,45 @@
   max-width: 480px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.footer-inquiry-cta {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.footer-contact .footer-inquiry-cta:first-child {
+  margin-bottom: 1.75rem;
+  padding-bottom: 0.25rem;
+}
+
+.footer-inquiry-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: var(--radius);
+  background: var(--hds-white);
+  color: var(--hds-navy);
+  text-decoration: none;
+  border: 2px solid var(--hds-white);
+  transition:
+    background 0.2s,
+    color 0.2s,
+    box-shadow 0.2s;
+}
+
+.footer-inquiry-btn:hover {
+  background: transparent;
+  color: var(--hds-white);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.footer-inquiry-btn:focus-visible {
+  outline: 2px solid var(--hds-white);
+  outline-offset: 3px;
 }
 
 .footer-contact-grid {

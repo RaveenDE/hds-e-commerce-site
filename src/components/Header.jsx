@@ -67,6 +67,15 @@ export default function Header() {
               )
             })}
           </ul>
+          <div className="header-cta">
+            <Link
+              to="/inquiry"
+              className={`btn btn-primary btn-sm nav-inquiry-btn${location.pathname === '/inquiry' ? ' nav-inquiry-btn-active' : ''}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              Send inquiry
+            </Link>
+          </div>
         </nav>
       </div>
     </header>

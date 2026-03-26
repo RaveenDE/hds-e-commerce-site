@@ -1,47 +1,82 @@
-import AWS from 'aws-sdk'
+import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses'
 
-// AWS Lambda handler for the "Send Inquiry" form.
-// This version sends an email via Amazon SES and does NOT use a database.
-// Configure these environment variables on the Lambda:
-// - INQUIRY_TO_EMAIL   (required)  – where to send the inquiry
-// - INQUIRY_FROM_EMAIL (optional)  – verified SES sender; defaults to INQUIRY_TO_EMAIL
-// - FRONTEND_ORIGIN    (optional)  – your frontend origin for CORS
 
-const ses = new AWS.SES({ region: process.env.AWS_REGION || 'us-east-1' })
+const region = process.env.AWS_REGION || 'us-east-1'
+const sesClient = new SESClient({ region })
+
+function corsHeaders() {
+  const origin = process.env.FRONTEND_ORIGIN?.trim()
+  const headers = {
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  }
+  if (origin) {
+    headers['Access-Control-Allow-Origin'] = origin
+    
+  } else {
+    headers['Access-Control-Allow-Origin'] = '*'
+  }
+  return headers
+}
+
+function jsonResponse(statusCode, body) {
+  return {
+    statusCode,
+    headers: {
+      'Content-Type': 'application/json',
+      ...corsHeaders(),
+    },
+    body: JSON.stringify(body),
+  }
+}
 
 export const handler = async (event) => {
+  const method = event.requestContext?.http?.method || event.httpMethod
+
+  if (method === 'OPTIONS') {
+    return {
+      statusCode: 204,
+      headers: corsHeaders(),
+      body: '',
+    }
+  }
+
+  if (method !== 'POST') {
+    return jsonResponse(405, { error: 'Method not allowed' })
+  }
+
   try {
-    const body = typeof event.body === 'string' ? JSON.parse(event.body || '{}') : event.body || {}
+    const rawPath = event.rawPath || event.path || ''
+    if (!rawPath.includes('/api/inquiries')) {
+      return jsonResponse(404, { error: 'Not found' })
+    }
+
+    let body
+    try {
+      body =
+        typeof event.body === 'string'
+          ? JSON.parse(event.body || '{}')
+          : event.body || {}
+    } catch {
+      return jsonResponse(400, { error: 'Invalid JSON body' })
+    }
     const { name, email, phone, company, service, message } = body
 
     if (!name?.trim() || !email?.trim() || !message?.trim()) {
-      return {
-        statusCode: 400,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': process.env.FRONTEND_ORIGIN || '*',
-          'Access-Control-Allow-Credentials': 'true',
-        },
-        body: JSON.stringify({ error: 'Name, email, and message are required' }),
-      }
+      return jsonResponse(400, {
+        error: 'Name, email, and message are required',
+      })
     }
 
     const id = `inq-${Date.now()}`
-
     const toEmail = process.env.INQUIRY_TO_EMAIL
     const fromEmail = process.env.INQUIRY_FROM_EMAIL || toEmail
 
     if (!toEmail) {
       console.error('INQUIRY_TO_EMAIL is not configured on the Lambda')
-      return {
-        statusCode: 500,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': process.env.FRONTEND_ORIGIN || '*',
-          'Access-Control-Allow-Credentials': 'true',
-        },
-        body: JSON.stringify({ error: 'Inquiry email destination not configured' }),
-      }
+      return jsonResponse(500, {
+        error: 'Inquiry email destination not configured',
+      })
     }
 
     const payload = {
@@ -55,8 +90,6 @@ export const handler = async (event) => {
       createdAt: new Date().toISOString(),
     }
 
-    console.log('New inquiry received', payload)
-
     const subject = `New inquiry from ${payload.name}`
     const textBody =
       `New inquiry received:\n\n` +
@@ -69,40 +102,49 @@ export const handler = async (event) => {
       `ID: ${payload.id}\n` +
       `Time: ${payload.createdAt}\n`
 
-    const params = {
+    // Optional: INQUIRY_REPLY_TO_INQUIRER=1 adds Reply-To (in sandbox the inquirer email must be verified in SES)
+    const cmd = {
       Source: fromEmail,
       Destination: { ToAddresses: [toEmail] },
       Message: {
         Subject: { Data: subject },
-        Body: {
-          Text: { Data: textBody },
-        },
+        Body: { Text: { Data: textBody } },
       },
     }
-
-    await ses.sendEmail(params).promise()
-
-    return {
-      statusCode: 201,
-      headers: {
-        'Content-Type': 'application/json',
-        // CORS: allow the S3 / CloudFront origin
-        'Access-Control-Allow-Origin': process.env.FRONTEND_ORIGIN || '*',
-        'Access-Control-Allow-Credentials': 'true',
-      },
-      body: JSON.stringify({ id, message: 'Inquiry received' }),
+    if (process.env.INQUIRY_REPLY_TO_INQUIRER === '1') {
+      cmd.ReplyToAddresses = [payload.email]
     }
+
+    const sendResult = await sesClient.send(new SendEmailCommand(cmd))
+
+    console.log('Inquiry email sent via SES', {
+      id: payload.id,
+      sesMessageId: sendResult.MessageId,
+      to: toEmail,
+      from: fromEmail,
+    })
+
+    return jsonResponse(201, { id, message: 'Inquiry received' })
   } catch (err) {
     console.error('Failed to handle inquiry', err)
-    return {
-      statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': process.env.FRONTEND_ORIGIN || '*',
-        'Access-Control-Allow-Credentials': 'true',
-      },
-      body: JSON.stringify({ error: 'Internal server error' }),
+
+    const name = err?.name || ''
+    const msg = String(err?.message || '')
+    const sesRelated =
+      name === 'MessageRejected' ||
+      name === 'MailFromDomainNotVerifiedException' ||
+      name === 'ConfigurationSetDoesNotExistException' ||
+      /not verified|sandbox/i.test(msg)
+
+    if (sesRelated) {
+      return jsonResponse(502, {
+        error:
+          'Email could not be sent via Amazon SES. Verify INQUIRY_FROM_EMAIL and INQUIRY_TO_EMAIL in SES (same region as Lambda), move out of sandbox if needed, and attach ses:SendEmail to the Lambda role.',
+      })
     }
+
+    return jsonResponse(500, {
+      error: 'Internal server error',
+    })
   }
 }
-

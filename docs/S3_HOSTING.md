@@ -103,11 +103,25 @@ This frontend talks to an API (e.g. `/api` proxied to `localhost:3001` in dev). 
 - Host the backend elsewhere (e.g. EC2, ECS, Lambda, or another server) and set the API base URL in the app (e.g. via env or config).
 - If you use CloudFront, you can add a behavior that forwards `/api` to the backend origin.
 
+## 6. SEO (Google indexing)
+
+Before production build, set your public site URL (no trailing slash):
+
+1. Copy `.env.example` to `.env` and set `VITE_SITE_URL=https://www.yourdomain.com` (your real domain or CloudFront URL).
+2. Run `npm run build`. The output includes:
+   - **`dist/sitemap.xml`** — main marketing URLs (home, services, inquiry, careers).
+   - **`dist/robots.txt`** — allows crawling, disallows `/cart` and `/checkout`, points to the sitemap.
+
+3. In [Google Search Console](https://search.google.com/search-console), add your property and submit `https://your-domain/sitemap.xml`.
+
+If you skip `VITE_SITE_URL`, the sitemap uses placeholder `https://YOUR-DOMAIN.com` — **replace by setting `.env` before each production build.**
+
 ## Quick reference
 
 | Step              | Action |
 |-------------------|--------|
-| Build             | `npm run build` |
+| Build             | Set `VITE_SITE_URL` in `.env`, then `npm run build` |
 | Deploy to S3      | `BUCKET_NAME=your-bucket node scripts/deploy-s3.mjs` or `aws s3 sync dist/ s3://your-bucket --delete` |
 | Index / Error doc | Both set to `index.html` for React Router |
 | Public access     | Bucket policy above + unblock public access if needed |
+| SEO               | Submit `sitemap.xml` in Google Search Console |

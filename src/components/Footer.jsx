@@ -15,6 +15,11 @@ export default function Footer() {
     <footer className="footer">
       <div className="container">
         <section id="contact" className="footer-contact">
+          <div className="footer-inquiry-cta">
+            <Link to="/inquiry" className="footer-inquiry-btn">
+              Send inquiry
+            </Link>
+          </div>
           <h2 className="footer-contact-title">Contact Us</h2>
           <p className="footer-contact-subtitle">
             Get in touch for quotes, project discussions, or general inquiries.
@@ -69,6 +74,7 @@ export default function Footer() {
               <li><Link to="/elevator-interior-solution">Elevator Interior Solution</Link></li>
               <li><Link to="/railing-balustrade">Railing & Balustrade</Link></li>
               <li><Link to="/careers">Careers</Link></li>
+              <li><Link to="/inquiry">Send inquiry</Link></li>
               <li><Link to="/#services">Services</Link></li>
               <li><Link to="/#about">About</Link></li>
             </ul>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { hdsApi } from '../api/hdsApi'
+import SEO from '../components/SEO'
 import './Inquiry.css'
 
 const serviceOptions = [
@@ -48,6 +49,11 @@ export default function Inquiry() {
   if (submitted) {
     return (
       <main className="page inquiry-page">
+        <SEO
+          title="Inquiry Sent"
+          description="Your message was received. HDS Engineering & Contractors responds to fabrication, elevator, and equipment inquiries within 24 hours."
+          path="/inquiry"
+        />
         <section className="inquiry-hero">
           <div className="container">
             <h1 className="inquiry-hero-title">Inquiry Sent</h1>
@@ -65,6 +71,11 @@ export default function Inquiry() {
 
   return (
     <main className="page inquiry-page">
+      <SEO
+        title="Send an Inquiry"
+        description="Request a quote for stainless steel fabrication, elevator interiors, railings, or commercial kitchen equipment. HDS Engineering & Contractors replies within 24 hours."
+        path="/inquiry"
+      />
       <section className="inquiry-hero">
         <div className="container">
           <h1 className="inquiry-hero-title">Send an Inquiry</h1>
