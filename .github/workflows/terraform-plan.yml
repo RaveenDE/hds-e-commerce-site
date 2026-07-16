@@ -1,0 +1,157 @@
+name: Terraform Plan and Cost Estimation
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/**'
+      - '.github/workflows/terraform-plan.yml'
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+  TF_VERSION: 1.0
+
+jobs:
+  terraform-plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Format Check
+        id: fmt
+        run: |
+          cd terraform
+          terraform fmt -check -recursive
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: |
+          cd terraform
+          terraform init -backend=false
+
+      - name: Terraform Validate
+        id: validate
+        run: |
+          cd terraform
+          terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        run: |
+          cd terraform
+          terraform plan -no-color -out=tfplan
+        continue-on-error: true
+
+      - name: Create plan summary
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let summary = '## Terraform Plan Summary\n\n';
+            
+            if ('${{ steps.fmt.outcome }}' === 'failure') {
+              summary += '❌ **Format Check Failed**\n\n';
+            }
+            
+            if ('${{ steps.validate.outcome }}' === 'failure') {
+              summary += '❌ **Validation Failed**\n\n';
+            }
+            
+            if ('${{ steps.plan.outcome }}' === 'failure') {
+              summary += '❌ **Plan Failed**\n\n';
+            } else if ('${{ steps.plan.outcome }}' === 'success') {
+              summary += '✅ **Plan Succeeded**\n\n';
+              summary += '### Status\n';
+              summary += '- Format: ${{ steps.fmt.outcome }}\n';
+              summary += '- Validation: ${{ steps.validate.outcome }}\n';
+              summary += '- Planning: ${{ steps.plan.outcome }}\n';
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+
+      - name: Comment Plan on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const plan = require('child_process').execSync('cd terraform && terraform show -no-color tfplan', {encoding: 'utf-8'});
+            
+            const comment = `## 📋 Terraform Plan
+
+            \`\`\`terraform
+            ${plan.substring(0, 3000)}
+            \`\`\`
+            
+            > **Note**: Plan output truncated if too long. Run \`terraform plan\` locally for full output.
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+        continue-on-error: true
+
+      - name: Check for changes
+        id: changes
+        run: |
+          cd terraform
+          if [ -s tfplan ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update PR Status
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let state = 'success';
+            let description = 'Terraform plan succeeded with no changes';
+            
+            if ('${{ steps.changes.outputs.has_changes }}' === 'true') {
+              description = 'Terraform plan shows changes - review required';
+            }
+            
+            if ('${{ steps.plan.outcome }}' === 'failure') {
+              state = 'failure';
+              description = 'Terraform plan failed';
+            }
+            
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: state,
+              description: description,
+              context: 'terraform-plan'
+            });

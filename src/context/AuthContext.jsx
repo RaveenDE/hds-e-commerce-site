@@ -4,26 +4,22 @@ const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const apiBase = useMemo(
-    () => import.meta.env.VITE_API_URL || 'http://localhost:3001',
+    () =>
+      import.meta.env.VITE_API_URL ||
+      (import.meta.env.DEV ? 'http://localhost:3001' : ''),
     []
   )
 
-  const [state, setState] = useState({ loading: true, user: null })
+  // Auth is intentionally disabled for this deployment.
+  const [state, setState] = useState({
+    loading: false,
+    user: { email: 'guest@local', admin: true },
+  })
 
   const refresh = useCallback(async () => {
-    try {
-      const res = await fetch(`${apiBase}/api/auth/me`, { credentials: 'include' })
-      if (!res.ok) {
-        setState({ loading: false, user: null })
-        return null
-      }
-      const data = await res.json()
-      setState({ loading: false, user: data.user || null })
-      return data.user || null
-    } catch {
-      setState({ loading: false, user: null })
-      return null
-    }
+    // Auth disabled: keep a static admin user in state and skip network calls.
+    setState({ loading: false, user: { email: 'guest@local', admin: true } })
+    return { email: 'guest@local', admin: true }
   }, [apiBase])
 
   useEffect(() => {
@@ -31,21 +27,13 @@ export function AuthProvider({ children }) {
   }, [refresh])
 
   const loginWithGoogle = useCallback(
-    (returnTo = '/admin') => {
-      window.location.href = `${apiBase}/api/auth/google/start?returnTo=${encodeURIComponent(returnTo)}`
-    },
+    (_returnTo = '/admin') => {},
     [apiBase]
   )
 
   const logout = useCallback(async () => {
-    try {
-      await fetch(`${apiBase}/api/auth/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      })
-    } finally {
-      setState({ loading: false, user: null })
-    }
+    // Auth disabled: no-op logout keeps local static session.
+    setState({ loading: false, user: { email: 'guest@local', admin: true } })
   }, [apiBase])
 
   const value = useMemo(

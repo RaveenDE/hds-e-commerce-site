@@ -63,7 +63,7 @@ $env:BUCKET_NAME = "hds-website-hosting-bucket"
 node scripts/deploy-s3.mjs
 
 # Or one-liner (PowerShell)
-$env:BUCKET_NAME="hds-website"; node scripts/deploy-s3.mjs
+$env:BUCKET_NAME="hds-website-bucket"; node scripts/deploy-s3.mjs
 ```
 
 Or with AWS CLI only (after `npm run build`):

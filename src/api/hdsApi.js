@@ -4,7 +4,9 @@ const DEFAULT_BASE = ''
 
 /** Dev only: `VITE_SKIP_LOCAL_API=1` skips /api/products, /orders, /customers, /promos when Express is off (no Vite proxy spam). Inquiry is never skipped. */
 function skipBackendApi() {
-  return import.meta.env.DEV && import.meta.env.VITE_SKIP_LOCAL_API === '1'
+  // Backend APIs are disabled for this deployment.
+  // return import.meta.env.DEV && import.meta.env.VITE_SKIP_LOCAL_API === '1'
+  return true
 }
 
 const PROMOS_STUB = {

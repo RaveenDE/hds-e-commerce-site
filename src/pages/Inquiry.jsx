@@ -161,9 +161,6 @@ export default function Inquiry() {
               />
             </div>
             <div className="form-actions">
-              <button type="submit" className="btn btn-primary btn-lg" disabled={submitting}>
-                {submitting ? 'Sending…' : 'Send Inquiry'}
-              </button>
               <Link to="/" className="btn btn-secondary btn-lg">
                 Cancel
               </Link>

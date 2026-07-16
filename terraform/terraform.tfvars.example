@@ -1,0 +1,37 @@
+# AWS Configuration
+aws_region = "us-east-1"
+
+# Project Configuration
+project_name = "hds-site"
+environment  = "production"
+
+# Domain Configuration
+domain_name = "hamiltondesilvansons.com"
+subdomain   = "www"
+
+# S3 Configuration (optional - will use domain_name if not specified)
+# bucket_name = "hds-website-bucket"
+
+# Route 53 Configuration
+create_hosted_zone = false
+# hosted_zone_id = "Z1234567890ABC"
+
+# CloudFront Configuration
+enable_compression  = true
+cache_ttl_default   = 3600
+cache_ttl_max       = 86400
+cache_ttl_min       = 0
+
+# S3 Document Configuration
+index_document = "index.html"
+error_document = "index.html"
+
+# Optional: Enable redirect from apex domain to www
+# enable_subdomain_redirect = true
+
+# Tags
+tags = {
+  Environment = "production"
+  Team        = "DevOps"
+  CostCenter  = "Engineering"
+}
