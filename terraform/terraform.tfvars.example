@@ -6,7 +6,7 @@ project_name = "hds-site"
 environment  = "production"
 
 # Domain Configuration
-domain_name = "example.com"
+domain_name = "hamiltondesilvansons.com"
 subdomain   = "www"
 
 # S3 Configuration (optional - will use domain_name if not specified)

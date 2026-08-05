@@ -15,7 +15,7 @@ output "s3_bucket_region" {
 
 output "redirect_s3_bucket_name" {
   description = "S3 bucket name for redirects (if enabled)"
-  value       = var.enable_subdomain_redirect ? aws_s3_bucket.redirect[0].id : null
+  value       = null
 }
 
 output "cloudfront_distribution_id" {
@@ -45,7 +45,7 @@ output "cloudfront_oai_id" {
 
 output "route53_zone_id" {
   description = "Route 53 hosted zone ID"
-  value       = data.aws_route53_zone.main.zone_id
+  value       = local.hosted_zone_id
 }
 
 output "website_domain" {

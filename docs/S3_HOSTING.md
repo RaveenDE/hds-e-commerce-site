@@ -92,7 +92,11 @@ Use the **website endpoint** (e.g. `s3-website-...`), not the **S3 object URL** 
    - **Default root object**: `index.html`.
    - Under **Error pages**: add a custom error response for **403** and **404** with **Response page path** `/index.html`, **HTTP response code** `200`, so client-side routes work when users open or refresh deep links.
 
+  If your domain is registered with a different registrar, that is fine. The important part is that the registrar must point the domain's nameservers to the Route 53 hosted zone. Creating the hosted zone in AWS does not update the registrar automatically.
+
 2. Point your domain to the CloudFront distribution (CNAME or Route 53 alias).
+
+  If you created the hosted zone in Route 53, copy the zone's four nameservers into your registrar's DNS settings. Until that delegation is updated, ACM certificate validation will keep waiting.
 
 3. Request or attach an ACM certificate in us-east-1 for HTTPS.
 
